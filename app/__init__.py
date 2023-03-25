@@ -1,1 +1,1 @@
-from .pathfinder import PathFinder
+from .utils import PathFinder, RichTextFormatter

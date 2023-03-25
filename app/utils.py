@@ -1,4 +1,6 @@
 import os
+from rich.console import Console
+from rich.markdown import Markdown
 
 
 class PathFinder:
@@ -19,6 +21,21 @@ class PathFinder:
                 ]
             )
         return all_paths
+
+
+class RichTextFormatter:
+    def __init__(self, note):
+        self.note = self.reader(note)
+
+    def reader(self, note):
+        with open(note, "r") as f:
+            return f.read()
+
+    def format(self):
+        console = Console()
+        with console.capture() as capture:
+            console.print(Markdown(self.note))
+        return capture.get()
 
 
 if __name__ == "__main__":
