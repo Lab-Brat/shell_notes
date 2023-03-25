@@ -1,0 +1,3 @@
+[submodule "cheatsheets"]
+	path = data/cheatsheets
+	url = https://github.com/Lab-Brat/cheatsheets.git
