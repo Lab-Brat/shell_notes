@@ -7,6 +7,9 @@ app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
 async def root(note: str):
+    """
+    Return the note in HTML format.
+    """
     endpoints = PathFinder().all_paths
     for e in endpoints:
         try:

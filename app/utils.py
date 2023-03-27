@@ -12,6 +12,10 @@ class PathFinder:
         self.all_paths = self.get_paths()
 
     def get_submodule(self, data):
+        """
+        Traverse directory with os.walk and return a list of dicts
+        with the name of the file as key and the full path as value.
+        """
         all_paths = []
         for root, _, files in os.walk(data, topdown=True):
             all_paths.extend(
@@ -24,6 +28,9 @@ class PathFinder:
         return all_paths
 
     def get_github(self):
+        """
+        Clone the github repo and return the path to the data folder.
+        """
         link = os.environ.get("SN_GITHUB_LINK")
         rep_name = link.split("/")[-1][0:-4]
         tmp_path = f"/tmp/shell_notes_{rep_name}"
@@ -31,6 +38,9 @@ class PathFinder:
         return tmp_path
 
     def get_paths(self):
+        """
+        Return the paths to the notes based on the source.
+        """
         if self.source == "submodule":
             return self.get_submodule(self.data)
         elif self.source == "github":
@@ -42,10 +52,16 @@ class RichTextFormatter:
         self.note = self.reader(note)
 
     def reader(self, note):
+        """
+        Read the note and return the content.
+        """
         with open(note, "r") as f:
             return f.read()
 
     def format(self):
+        """
+        Format the Markdown note using rich and return the content.
+        """
         console = Console()
         with console.capture() as capture:
             console.print(Markdown(self.note))
