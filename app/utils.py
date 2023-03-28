@@ -34,7 +34,10 @@ class PathFinder:
         link = os.environ.get("SN_GITHUB_LINK")
         rep_name = link.split("/")[-1][0:-4]
         tmp_path = f"/tmp/shell_notes_{rep_name}"
-        os.system(f"git clone {link} {tmp_path}")
+        if not os.path.isdir(tmp_path):
+            os.system(f"git -C {tmp_path} clone")
+        else:
+            os.system(f"git -C {tmp_path} pull")
         return tmp_path
 
     def get_paths(self):
