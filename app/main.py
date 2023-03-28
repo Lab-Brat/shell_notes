@@ -5,8 +5,8 @@ from .utils import PathFinder, RichTextFormatter
 app = FastAPI()
 
 
-@app.get("/", response_class=HTMLResponse)
-async def root(note: str):
+@app.get("/{note}", response_class=HTMLResponse)
+async def root(note):
     """
     Return the note in HTML format.
     """
