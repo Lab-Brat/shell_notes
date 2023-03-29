@@ -35,7 +35,7 @@ class PathFinder:
         rep_name = link.split("/")[-1][0:-4]
         tmp_path = f"/tmp/shell_notes_{rep_name}"
         if not os.path.isdir(tmp_path):
-            os.system(f"git -C {tmp_path} clone")
+            os.system(f"git clone {link} {tmp_path}")
         else:
             os.system(f"git -C {tmp_path} pull")
         return tmp_path
