@@ -37,6 +37,7 @@ class PathFinder:
         if not os.path.isdir(tmp_path):
             os.system(f"git clone {link} {tmp_path}")
         else:
+            os.system(f"git -C {tmp_path} config pull.ff only")
             os.system(f"git -C {tmp_path} pull")
         return tmp_path
 
