@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from .utils import PathFinder, RichTextFormatter
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 
 
 @app.get("/{note}", response_class=HTMLResponse)
