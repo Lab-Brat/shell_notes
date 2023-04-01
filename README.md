@@ -22,7 +22,9 @@ Start the continer:
 ```bash
 docker run --name shell_notes \
            --volume ./data/:/code/data \
-           -p 127.0.0.1:8000:8000/tcp \
+           -p 127.0.0.1:8000:8000/tcp  \
+           -e SN_SOURCE="github" \
+           -e SN_GITHUB_LINK="https://github.com/Lab-Brat/cheatsheets.git" \
            -d -t shell_notes_api
 ```
 
