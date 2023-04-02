@@ -18,3 +18,11 @@ async def root(note):
         except:
             pass
     return "Note not found :(\n"
+
+
+@app.get("/find/{note}")
+async def find(note):
+    """
+    Search the note in existing directory tree
+    """
+    return {"message": PathFinder().search_note(note)}

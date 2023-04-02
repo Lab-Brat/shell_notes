@@ -50,6 +50,17 @@ class PathFinder:
         elif self.source == "github":
             return self.get_submodule(self.get_github())
 
+    def search_note(self, note):
+        """
+        Search the note in the list of paths and return the path.
+        """
+        found = []
+        for path in self.all_paths:
+            path = list(path.keys())[0]
+            if note in path:
+                found.append(path)
+        return found
+
 
 class RichTextFormatter:
     def __init__(self, note):
