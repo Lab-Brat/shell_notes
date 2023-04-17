@@ -3,4 +3,5 @@ dist/
 venv/
 *.egg-info/
 __pycache__/
+.vscode/
 logfile.log
