@@ -11,7 +11,7 @@ class PathFinder:
         self.source = os.environ.get("SN_SOURCE", "submodule")
         self.all_paths = self.get_paths()
 
-    def get_submodule(self, data):
+    def read_source(self, data):
         """
         Traverse directory with os.walk and return a list of dicts
         with the name of the file as key and the full path as value.
@@ -46,9 +46,9 @@ class PathFinder:
         Return the paths to the notes based on the source.
         """
         if self.source == "submodule":
-            return self.get_submodule(self.data)
+            return self.read_source(self.data)
         elif self.source == "github":
-            return self.get_submodule(self.get_github())
+            return self.read_source(self.get_github())
 
     def search_note(self, note):
         """
