@@ -31,6 +31,13 @@ docker run --name shell_notes \
 ### How To Use
 Test if it's working:
 ```bash
-curl 127.0.0.1:8000
-curl 127.0.0.1:8000/?note=git
+# test general availability
+curl http://127.0.0.1:8000
+
+# get a note
+curl http://127.0.0.1:8000/notes/git
+
+# find a note
+curl http://127.0.0.1:8000/find/git
 ```
+
