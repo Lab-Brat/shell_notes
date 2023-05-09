@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+  shellnotes:
+    image: shell_notes_api
+    container_name: shell_notes
+    volumes:
+      - ./data/:/code/data
+    ports:
+      - "8000:8000"
+    environment:
+      - SN_SOURCE=github
+      - SN_GITHUB_LINK=https://github.com/Lab-Brat/cheatsheets.git
