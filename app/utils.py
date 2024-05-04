@@ -6,34 +6,34 @@ from rich.markdown import Markdown
 class PathFinder:
     def __init__(self):
         # env var names
-        envar_ghlink = "SN_GITHUB_LINK"
-        envar_source = "SN_SOURCE"
-
-        self.source = os.environ.get(envar_source, "submodule")
-        if self.source == "github":
-            self.link = os.environ.get(envar_ghlink)
-            self._verify_env_vairable(envar_ghlink)
+        self.envar_ghlink = "SN_GITHUB_LINK"
+        self.envar_source = "SN_SOURCE"
 
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.root = os.path.dirname(self.path)
         self.data = self.root + "/data"
-        self.all_paths = self.get_paths()
 
-    def _verify_env_vairable(self, envar):
+        source = os.environ.get(self.envar_source, "submodule")
+        if source == "submodule":
+            self.all_note_paths = self.read_source(self.data)
+        elif source == "github":
+            self.all_note_paths = self.read_source(self.get_github())
+
+    def _verify_and_get_envar(self, envar):
         var_exist = os.environ.get(envar)
-        if not var_exist:
+        if var_exist is None:
             print(f"{envar} environmental variable is not defined")
             exit()
         else:
-            return envar
+            return var_exist
 
-    def read_source(self, data):
+    def read_source(self, data_path):
         """
         Traverse directory with os.walk and return a list of dicts
         with the name of the file as key and the full path as value.
         """
         all_paths = []
-        for root, _, files in os.walk(data, topdown=True):
+        for root, _, files in os.walk(data_path, topdown=True):
             all_paths.extend(
                 [
                     {file[0:-3]: f"{root}/{file}"}
@@ -41,36 +41,33 @@ class PathFinder:
                     if file.endswith(".md") and file != "README.md"
                 ]
             )
-        return all_paths
+
+        if all_paths == []:
+            print("0 files found")
+            exit()
+        else:
+            return all_paths
 
     def get_github(self):
         """
         Clone the github repo and return the path to the data folder.
         """
-        rep_name = self.link.split("/")[-1][0:-4]
+        link = self._verify_and_get_envar(self.envar_ghlink)
+        rep_name = link.split("/")[-1][0:-4]
         tmp_path = f"/tmp/shell_notes_{rep_name}"
         if not os.path.isdir(tmp_path):
-            os.system(f"git clone {self.link} {tmp_path}")
+            os.system(f"git clone {link} {tmp_path}")
         else:
             os.system(f"git -C {tmp_path} config pull.ff only")
             os.system(f"git -C {tmp_path} pull")
         return tmp_path
-
-    def get_paths(self):
-        """
-        Return the paths to the notes based on the source.
-        """
-        if self.source == "submodule":
-            return self.read_source(self.data)
-        elif self.source == "github":
-            return self.read_source(self.get_github())
 
     def search_note(self, note):
         """
         Search the note in the list of paths and return the path.
         """
         found = []
-        for path in self.all_paths:
+        for path in self.all_note_paths:
             path = list(path.keys())[0]
             if note in path:
                 found.append(path)
@@ -99,4 +96,4 @@ class RichTextFormatter:
 
 
 if __name__ == "__main__":
-    print(PathFinder().all_paths)
+    print(PathFinder().all_note_paths)

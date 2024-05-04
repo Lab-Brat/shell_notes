@@ -10,7 +10,7 @@ async def root(note):
     """
     Return the note in HTML format.
     """
-    endpoints = PathFinder().all_paths
+    endpoints = PathFinder().all_note_paths
     for e in endpoints:
         try:
             e[note]
