@@ -5,11 +5,27 @@ from rich.markdown import Markdown
 
 class PathFinder:
     def __init__(self):
+        # env var names
+        envar_ghlink = "SN_GITHUB_LINK"
+        envar_source = "SN_SOURCE"
+
+        self.source = os.environ.get(envar_source, "submodule")
+        if self.source == "github":
+            self.link = os.environ.get(envar_ghlink)
+            self._verify_env_vairable(envar_ghlink)
+
         self.path = os.path.dirname(os.path.abspath(__file__))
         self.root = os.path.dirname(self.path)
         self.data = self.root + "/data"
-        self.source = os.environ.get("SN_SOURCE", "submodule")
         self.all_paths = self.get_paths()
+
+    def _verify_env_vairable(self, envar):
+        var_exist = os.environ.get(envar)
+        if not var_exist:
+            print(f"{envar} environmental variable is not defined")
+            exit()
+        else:
+            return envar
 
     def read_source(self, data):
         """
@@ -31,11 +47,10 @@ class PathFinder:
         """
         Clone the github repo and return the path to the data folder.
         """
-        link = os.environ.get("SN_GITHUB_LINK")
-        rep_name = link.split("/")[-1][0:-4]
+        rep_name = self.link.split("/")[-1][0:-4]
         tmp_path = f"/tmp/shell_notes_{rep_name}"
         if not os.path.isdir(tmp_path):
-            os.system(f"git clone {link} {tmp_path}")
+            os.system(f"git clone {self.link} {tmp_path}")
         else:
             os.system(f"git -C {tmp_path} config pull.ff only")
             os.system(f"git -C {tmp_path} pull")
